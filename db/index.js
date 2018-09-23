@@ -1,8 +1,4 @@
-const Sequelize = require('sequelize');
-const db = new Sequelize(
-  process.env.DATABASE_URL || 'postgres://localhost:5432/seniorproject',
-  { logging: false }
-);
+const db = require('./db');
 const School = require('./School');
 const Student = require('./Student');
 
@@ -47,4 +43,9 @@ const seed = async () => {
   ]);
 };
 
-module.exports = { db, seed, School, Student };
+module.exports = {
+  db,
+  seed,
+  School,
+  Student,
+};
