@@ -89,9 +89,8 @@ const reducer = (state = initialState, action) => {
   case DELETE_SCHOOL:
     const school = state.schools.find(s => s.id == action.id)
     const newStudents = state.students.map(function (student) {
-      if (student.schoolId == school.id) {
-        student.schoolId = null
-      }
+      if (student.schoolId != school.id) { student.schoolId = null }
+      return student
     })
     return {
       ...state,

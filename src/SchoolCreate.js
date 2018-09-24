@@ -33,17 +33,18 @@ class SchoolCreate extends Component {
     }
     const _school = this.props.schools.find(
       school => school.id * 1 == this.props.id * 1);
+    const { name, address, description } = _school
     return this.setState({
-      name: _school.name,
-      address: _school.address || '',
-      description: _school.description || '',
+      name,
+      address,
+      description,
     });
   }
 
   handleDeleteSchool() {
-    console.log(this.props.id)
-    this.props.history.push('/schools')
-    this.props.deleteSchool(this.props.id)
+    const { id, history } = this.props
+    this.props.deleteSchool(id)
+      .then(() => history.push('/schools'))
   }
 
   handleChange(e) {
@@ -103,6 +104,7 @@ class SchoolCreate extends Component {
           </button>
           <StudentList id={id}/>
           <AddStudents id={id} history={history}/>
+          <br/>
           <Link
             to = {
                 {

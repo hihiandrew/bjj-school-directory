@@ -5,8 +5,6 @@ import Schools from './Schools';
 import Students from './Students';
 import SchoolCreate from './SchoolCreate';
 import StudentCreate from './StudentCreate';
-// import SchoolUpdate from './SchoolUpdate';
-// import StudentUpdate from './StudentUpdate';
 import { connect } from 'react-redux';
 import { getSchools, getStudents } from './store';
 
