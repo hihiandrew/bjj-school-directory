@@ -41,7 +41,6 @@ class SchoolCreate extends Component {
   }
 
   handleDeleteSchool() {
-    //TODO
     console.log(this.props.id)
     this.props.history.push('/schools')
     this.props.deleteSchool(this.props.id)
