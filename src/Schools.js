@@ -25,7 +25,7 @@ class Schools extends Component {
           })}
         </ul>
         <Link to="schools/create">
-          <div>New School</div>
+          <button>New School</button>
         </Link>
       </div>
     );

@@ -13,6 +13,12 @@ const Student = db.define('student', {
   gpa: {
     type: Sequelize.FLOAT,
   },
+}, {
+  hooks: {
+    beforeSave: student => {
+      if (student.gpa == '') { student.gpa = null }
+    }
+  }
 });
 
 module.exports = Student;

@@ -31,7 +31,7 @@ class Students extends Component {
           })}
         </ul>
         <Link to="students/create">
-          <div>New Student</div>
+          <button>New Student</button>
         </Link>
       </div>
     );

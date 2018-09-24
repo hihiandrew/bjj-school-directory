@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { createSchool } from './store';
+import { addSchool, updateSchool, deleteSchool } from './store';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom'
+import StudentList from './StudentList'
+import AddStudents from './AddStudents'
 
 class SchoolCreate extends Component {
   constructor() {
@@ -12,26 +15,63 @@ class SchoolCreate extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setFormValues = this.setFormValues.bind(this);
+    this.handleDeleteSchool = this.handleDeleteSchool.bind(this);
+  }
+
+  componentDidMount() {
+    this.setFormValues();
+  }
+
+  setFormValues() {
+    if (this.props.id == 'create') {
+      return this.setState({
+        name: '',
+        address: '',
+        description: ''
+      });
+    }
+    const _school = this.props.schools.find(
+      school => school.id * 1 == this.props.id * 1);
+    return this.setState({
+      name: _school.name,
+      address: _school.address || '',
+      description: _school.description || '',
+    });
+  }
+
+  handleDeleteSchool() {
+    //TODO
+    console.log(this.props.id)
+    this.props.history.push('/schools')
+    this.props.deleteSchool(this.props.id)
   }
 
   handleChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({
+      [e.target.name]: e.target.value
+    });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.createSchool(this.state);
-    this.setState({
-      name: '',
-      address: '',
-      description: '',
-    });
+    const { id, history, addSchool, updateSchool } = this.props
+    if (id == 'create') {
+      return addSchool(this.state)
+        .then(() => history.push('/schools'));
+    }
+    else {
+      updateSchool(this.state, id * 1)
+        .then(() => history.push(`/schools/${id}`));
+    }
   }
 
   render() {
-    console.log(this.props);
+    const { id, history } = this.props;
+    const createForm = id == 'create';
     return (
       <div>
+        <h3>{createForm ? 'Create' : 'Update'} School</h3>
         <form onSubmit={this.handleSubmit}>
           <p>Name: </p>{' '}
           <input
@@ -43,8 +83,9 @@ class SchoolCreate extends Component {
           <input
             value={this.state.address}
             name="address"
-            onChange={this.handleChange}
-          />
+            onChange={this.handleChange
+            }
+            />
           <p>Description: </p>{' '}
           <input
             value={this.state.description}
@@ -54,8 +95,27 @@ class SchoolCreate extends Component {
           <br />
           <br />
           <button type="submit" disabled={!this.state.name}>
-            Create School
+            {createForm ? 'Create' : 'Update'} School
           </button>
+          {!createForm ?
+          <div>
+          <button onClick={this.handleDeleteSchool}>
+            Delete School
+          </button>
+          <StudentList id={id}/>
+          <AddStudents id={id} history={history}/>
+          <Link
+            to = {
+                {
+                  pathname: '/students/create',
+                  state: {schoolId: id}
+                }
+              } >
+              <button>Add New Student</button>
+          </Link>
+
+          </div>
+          : ''}
         </form>
       </div>
     );
@@ -71,7 +131,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createSchool: school => dispatch(createSchool(school)),
+    addSchool: school => dispatch(addSchool(school)),
+    updateSchool: (school, id) => dispatch(updateSchool(school, id)),
+    deleteSchool: id => dispatch(deleteSchool(id)),
   };
 };
 

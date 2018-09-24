@@ -30,15 +30,28 @@ server.post('/schools/create', (req, res, next) => {
 });
 
 server.post('/students/create', (req, res, next) => {
-  const student = Student.build(req.body);
-  if (req.body.school) {
-    student.schoolId = req.body.school;
-  }
+  const { firstName, lastName, gpa, schoolId } = req.body
+  const student = Student.build({ firstName, lastName, gpa });
+  if (schoolId) { student.schoolId = schoolId }
   student
     .save()
     .then(student => res.json(student))
     .catch(next);
 });
+
+server.delete('/schools/:id', (req, res, next) => {
+  School.findById(req.params.id)
+    .then(school => school.destroy())
+    .then(() => res.sendStatus(200))
+    .catch(next)
+})
+
+server.delete('/students/:id', (req, res, next) => {
+  Student.findById(req.params.id)
+    .then(student => student.destroy())
+    .then(() => res.sendStatus(200))
+    .catch(next)
+})
 
 server.put('/schools/:id', (req, res, next) => {
   School.findById(req.params.id)
@@ -50,7 +63,6 @@ server.put('/schools/:id', (req, res, next) => {
 server.put('/students/:id', (req, res, next) => {
   const { school } = req.body;
   const newSchoolId = school ? school : null;
-
   Student.findById(req.params.id)
     .then(student => {
       student.setSchool(newSchoolId);
