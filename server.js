@@ -56,8 +56,8 @@ server.delete('/students/:id', (req, res, next) => {
 });
 
 server.put('/schools/:id', (req, res, next) => {
-  console.log('PUT SCHOOLS:');
-  console.log(req.body);
+  // console.log('PUT SCHOOLS:');
+  // console.log(req.body);
   School.findById(req.params.id)
     .then(school => school.update(req.body))
     .then(school => res.json(school))
@@ -65,8 +65,8 @@ server.put('/schools/:id', (req, res, next) => {
 });
 
 server.put('/students/:id', (req, res, next) => {
-  console.log('PUT STUDENTS:');
-  console.log(req);
+  // console.log('PUT STUDENTS:');
+  // console.log(req);
   const { schoolId } = req.body;
   const newSchoolId = schoolId ? schoolId : null;
   Student.findById(req.params.id)
