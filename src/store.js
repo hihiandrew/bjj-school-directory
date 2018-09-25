@@ -87,14 +87,13 @@ const reducer = (state = initialState, action) => {
       students: state.students.filter(s => s != student)
     }
   case DELETE_SCHOOL:
-    const school = state.schools.find(s => s.id == action.id)
     const newStudents = state.students.map(function (student) {
-      if (student.schoolId != school.id) { student.schoolId = null }
+      if (student.schoolId == action.id) { student.schoolId = null }
       return student
     })
     return {
       ...state,
-      schools: state.schools.filter(s => s != school),
+      schools: state.schools.filter(s => s.id != action.id),
       students: newStudents,
     }
   case UPDATE_STUDENT:
