@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { addSchool, updateSchool, deleteSchool } from './store';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
-import StudentList from './StudentList'
-import AddStudents from './AddStudents'
+import { Link } from 'react-router-dom';
+import StudentList from './StudentList';
+import AddStudents from './AddStudents';
 
 class SchoolCreate extends Component {
   constructor() {
@@ -28,12 +28,13 @@ class SchoolCreate extends Component {
       return this.setState({
         name: '',
         address: '',
-        description: ''
+        description: '',
       });
     }
     const _school = this.props.schools.find(
-      school => school.id * 1 == this.props.id * 1);
-    const { name, address, description } = _school
+      school => school.id * 1 == this.props.id * 1
+    );
+    const { name, address, description } = _school;
     return this.setState({
       name,
       address,
@@ -41,28 +42,27 @@ class SchoolCreate extends Component {
     });
   }
 
-  handleDeleteSchool() {
-    const { id, history } = this.props
-    this.props.deleteSchool(id)
-      .then(() => history.push('/schools'))
+  handleDeleteSchool(e) {
+    e.preventDefault();
+    const { id, history } = this.props;
+    this.props.deleteSchool(id).then(() => history.push('/schools'));
   }
 
   handleChange(e) {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const { id, history, addSchool, updateSchool } = this.props
+    const { id, history, addSchool, updateSchool } = this.props;
     if (id == 'create') {
-      return addSchool(this.state)
-        .then(() => history.push('/schools'));
-    }
-    else {
-      updateSchool(this.state, id * 1)
-        .then(() => history.push(`/schools/${id}`));
+      return addSchool(this.state).then(() => history.push('/schools'));
+    } else {
+      updateSchool(this.state, id * 1).then(() =>
+        history.push(`/schools/${id}`)
+      );
     }
   }
 
@@ -83,9 +83,8 @@ class SchoolCreate extends Component {
           <input
             value={this.state.address}
             name="address"
-            onChange={this.handleChange
-            }
-            />
+            onChange={this.handleChange}
+          />
           <p>Description: </p>{' '}
           <input
             value={this.state.description}
@@ -97,26 +96,24 @@ class SchoolCreate extends Component {
           <button type="submit" disabled={!this.state.name}>
             {createForm ? 'Create' : 'Update'} School
           </button>
-          {!createForm ?
-          <div>
-          <button onClick={this.handleDeleteSchool}>
-            Delete School
-          </button>
-          <StudentList id={id}/>
-          <AddStudents id={id} history={history}/>
-          <br/>
-          <Link
-            to = {
-                {
+          {!createForm ? (
+            <div>
+              <button onClick={this.handleDeleteSchool}>Delete School</button>
+              <StudentList id={id} />
+              <AddStudents id={id} history={history} />
+              <br />
+              <Link
+                to={{
                   pathname: '/students/create',
-                  state: {schoolId: id}
-                }
-              } >
-              <button>Add New Student</button>
-          </Link>
-
-          </div>
-          : ''}
+                  state: { schoolId: id },
+                }}
+              >
+                <button>Add New Student</button>
+              </Link>
+            </div>
+          ) : (
+            ''
+          )}
         </form>
       </div>
     );

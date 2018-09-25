@@ -21,12 +21,11 @@ class StudentCreate extends Component {
   }
 
   setFormValues() {
-    const { id, students, history } = this.props
+    const { id, students, history } = this.props;
     if (id == 'create') {
-
-      const schoolId =
-        history.location.state ?
-        history.location.state.schoolId * 1 : ''
+      const schoolId = history.location.state
+        ? history.location.state.schoolId * 1
+        : '';
       return this.setState({
         firstName: '',
         lastName: '',
@@ -34,27 +33,25 @@ class StudentCreate extends Component {
         schoolId,
       });
     }
-    const _student = students.find(
-      student => student.id * 1 == id * 1
-    );
-    const { firstName, lastName, gpa, schoolId } = _student
-    console.log(_student)
+    const _student = students.find(student => student.id * 1 == id * 1);
+    const { firstName, lastName, gpa, schoolId } = _student;
     return this.setState({
       firstName,
       lastName,
       gpa,
-      schoolId,
+      //handles schoolId:null students
+      schoolId: schoolId || '',
     });
   }
 
   handleChange(e) {
     if (e.target.type == 'number' || e.target.type == 'select-one') {
       return this.setState({
-        [e.target.name]: e.target.value * 1
+        [e.target.name]: e.target.value * 1,
       });
     }
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
@@ -64,8 +61,7 @@ class StudentCreate extends Component {
       this.props
         .addStudent(this.state)
         .then(() => this.props.history.push('/students'));
-    }
-    else {
+    } else {
       this.props
         .updateStudent(this.state, this.props.id * 1)
         .then(() => this.props.history.push('/students'));
@@ -74,7 +70,7 @@ class StudentCreate extends Component {
 
   render() {
     const { id, schools, deleteStudent } = this.props;
-    const createForm = this.props.id == 'create'
+    const createForm = this.props.id == 'create';
     return (
       <div>
         <h3>{createForm ? 'Create' : 'Update'} Student</h3>
@@ -121,9 +117,19 @@ class StudentCreate extends Component {
           >
             {createForm ? 'Create' : 'Update'} Student
           </button>
-          {!createForm ?
-          <button onClick={()=>deleteStudent(id)}> Delete Student </button>
-          : ''}
+          {!createForm ? (
+            <button
+              onClick={e => {
+                e.preventDefault();
+                deleteStudent(id);
+              }}
+            >
+              {' '}
+              Delete Student{' '}
+            </button>
+          ) : (
+            ''
+          )}
         </form>
       </div>
     );

@@ -1,24 +1,33 @@
 const Sequelize = require('sequelize');
 const db = require('./db');
 
-const Student = db.define('student', {
-  firstName: {
-    type: Sequelize.STRING,
-    allowNull: false,
+const Student = db.define(
+  'student',
+  {
+    firstName: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    gpa: {
+      type: Sequelize.FLOAT,
+    },
   },
-  lastName: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  gpa: {
-    type: Sequelize.FLOAT,
-  },
-}, {
-  hooks: {
-    beforeSave: student => {
-      if (student.gpa == '') { student.gpa = null }
-    }
+  {
+    hooks: {
+      beforeSave: student => {
+        if (student.gpa == '') {
+          student.gpa = null;
+        }
+        if (student.schoolId == '') {
+          student.schoolId = null;
+        }
+      },
+    },
   }
-});
+);
 
 module.exports = Student;

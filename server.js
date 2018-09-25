@@ -30,9 +30,11 @@ server.post('/schools/create', (req, res, next) => {
 });
 
 server.post('/students/create', (req, res, next) => {
-  const { firstName, lastName, gpa, schoolId } = req.body
+  const { firstName, lastName, gpa, schoolId } = req.body;
   const student = Student.build({ firstName, lastName, gpa });
-  if (schoolId) { student.schoolId = schoolId }
+  if (schoolId) {
+    student.schoolId = schoolId;
+  }
   student
     .save()
     .then(student => res.json(student))
@@ -43,17 +45,19 @@ server.delete('/schools/:id', (req, res, next) => {
   School.findById(req.params.id)
     .then(school => school.destroy())
     .then(() => res.sendStatus(200))
-    .catch(next)
-})
+    .catch(next);
+});
 
 server.delete('/students/:id', (req, res, next) => {
   Student.findById(req.params.id)
     .then(student => student.destroy())
     .then(() => res.sendStatus(200))
-    .catch(next)
-})
+    .catch(next);
+});
 
 server.put('/schools/:id', (req, res, next) => {
+  console.log('PUT SCHOOLS:');
+  console.log(req.body);
   School.findById(req.params.id)
     .then(school => school.update(req.body))
     .then(school => res.json(school))
@@ -61,8 +65,10 @@ server.put('/schools/:id', (req, res, next) => {
 });
 
 server.put('/students/:id', (req, res, next) => {
-  const { school } = req.body;
-  const newSchoolId = school ? school : null;
+  console.log('PUT STUDENTS:');
+  console.log(req);
+  const { schoolId } = req.body;
+  const newSchoolId = schoolId ? schoolId : null;
   Student.findById(req.params.id)
     .then(student => {
       student.setSchool(newSchoolId);
