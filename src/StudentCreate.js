@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { addStudent, updateStudent } from './store';
+import { addStudent, deleteStudent, updateStudent } from './store';
 import { connect } from 'react-redux';
 
 class StudentCreate extends Component {
@@ -73,7 +73,7 @@ class StudentCreate extends Component {
   }
 
   render() {
-    const { schools } = this.props;
+    const { id, schools, deleteStudent } = this.props;
     const createForm = this.props.id == 'create'
     return (
       <div>
@@ -121,6 +121,9 @@ class StudentCreate extends Component {
           >
             {createForm ? 'Create' : 'Update'} Student
           </button>
+          {!createForm ?
+          <button onClick={()=>deleteStudent(id)}> Delete Student </button>
+          : ''}
         </form>
       </div>
     );
@@ -137,6 +140,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     addStudent: student => dispatch(addStudent(student)),
+    deleteStudent: id => dispatch(deleteStudent(id)),
     updateStudent: (student, id) => dispatch(updateStudent(student, id)),
   };
 };

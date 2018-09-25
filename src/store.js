@@ -153,6 +153,8 @@ export const addSchool = school => {
   };
 };
 
+
+
 export const deleteSchool = (id) => {
   return dispatch => {
     return axios
@@ -171,6 +173,27 @@ export const deleteStudent = id => {
   }
 }
 
+// Less massaging redux state, more calls to server:
+// export const deleteSchool = (id) => {
+//   return dispatch => {
+//     return axios
+//       .delete(`/schools/${id}`)
+//       .then(() => dispatch(getSchools()))
+//       .then(() => dispatch(getStudents()))
+//       .catch(console.error.bind(console))
+//   }
+// }
+
+// export const deleteStudent = id => {
+//   return dispatch => {
+//     return axios
+//       .delete(`/students/${id}`)
+//       .then(() => dispatch(getSchools()))
+//       .then(() => dispatch(getStudents()))
+//       .catch(console.error.bind(console))
+//   }
+// }
+
 export const updateSchool = (school, id) => {
   return dispatch => {
     return axios
@@ -188,6 +211,30 @@ export const updateStudent = (student, id) => {
       .catch(console.error.bind(console));
   };
 };
+
+
+
+// export const updateSchool = (school, id) => {
+//   return dispatch => {
+//     return axios
+//       .put(`/schools/${id}`, school)
+//       .then(() => dispatch(getSchools()))
+//       .then(() => dispatch(getStudents()))
+//       .catch(console.error.bind(console));
+//   };
+// };
+
+// export const updateStudent = (student, id) => {
+//   return dispatch => {
+//     return axios
+//       .put(`/students/${id}`, student)
+//       .then(() => getSchools())
+//       .then(() => getStudents())
+//       .catch(console.error.bind(console));
+//   };
+// };
+
+
 
 //store
 export const store = createStore(
