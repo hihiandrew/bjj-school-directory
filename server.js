@@ -4,12 +4,18 @@ const PORT = process.env.PORT || 3000;
 const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const session = require('express-session')
 const { db, seed, School, Student } = require('./db');
 
 server.use(morgan('dev'));
 server.use(bodyParser.json());
 server.use(express.static(path.join(__dirname, 'public')));
 server.use('/dist', express.static(path.join(__dirname, 'dist')));
+server.use(session({
+  secret: 'kimura',
+  resave: false,
+  saveUnitialized: false,
+}))
 
 server.get('/api/schools', (req, res, next) => {
   School.findAll().then(schools => {
