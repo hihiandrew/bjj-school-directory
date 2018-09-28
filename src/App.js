@@ -11,11 +11,17 @@ import { getSchools, getStudents, checkUser } from './store';
 
 class App extends Component {
   componentDidMount() {
+    this.props.checkUser()
     this.props.getStudents();
     this.props.getSchools();
   }
 
   render() {
+
+    const renderNavbar = ({ history }) => {
+      return <Navbar history={history} />
+    }
+
     const renderSchoolCreate = ({ match, history }) => {
       return <SchoolCreate id={match.params.id} history={history} />;
     };
@@ -31,11 +37,11 @@ class App extends Component {
     return (
       <HashRouter>
         <div>
-          <Navbar />
+          <Route path="/" render={renderNavbar} />
           <hr />
-          <Route exact path="/auth/:action" component={renderAuth} />
+          <Route exact path="/auth/:action" render={renderAuth} />
           <Route exact path="/schools" component={Schools} />
-          <Route exact path="/students" render={Students} />
+          <Route exact path="/students" component={Students} />
           <Route exact path="/schools/:id" render={renderSchoolCreate} />
           <Route exact path="/students/:id" render={renderStudentCreate} />
         </div>

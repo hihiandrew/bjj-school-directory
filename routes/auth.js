@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { Auth } = require('../db');
 
-router.put('/login', async (req, res, next) => {
+router.put('/login', async(req, res, next) => {
   const { username, password } = req.body;
   const user = await Auth.findOne({
     where: {
@@ -12,7 +12,8 @@ router.put('/login', async (req, res, next) => {
   if (user) {
     req.session.userId = user.id;
     res.json(user);
-  } else {
+  }
+  else {
     const err = new Error('Incorrect username or password.');
     err.status = 401;
     next(err);
@@ -26,7 +27,8 @@ router.get('/me', (req, res, next) => {
     const err = new Error('No user logged in.');
     err.status = 404;
     next(err);
-  } else {
+  }
+  else {
     Auth.findById(req.session.userId)
       .then(user => res.json(user))
       .catch(next);
@@ -38,7 +40,7 @@ router.get('/logout', (req, res, next) => {
   res.status(204).end();
 });
 
-router.post('/signup', async (req, res, next) => {
+router.post('/signup', async(req, res, next) => {
   const { username, password } = req.body;
   const user = await Auth.create({
     username,

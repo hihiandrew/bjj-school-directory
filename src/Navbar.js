@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutUser } from './store';
 
@@ -10,12 +10,15 @@ class Navbar extends Component {
   }
 
   handleLogout() {
-    this.props.logout();
+    this.props.logoutUser();
     this.props.history.push('/auth/logout');
   }
 
   render() {
+
     const { schools, students, user } = this.props;
+    console.log('USER: ')
+    console.log(user)
     return (
       <div>
         {!user.username ? (
@@ -29,10 +32,12 @@ class Navbar extends Component {
           </div>
         ) : (
           <div>
-            <p>
+            <div>
+               <p>
               Logged in as {user.username} <br />
-              <p onClick={this.handleLogout}>Logout</p>
-            </p>
+              </p>
+            <p onClick={this.handleLogout}>Logout</p>
+            </div>
 
             <ul>
               <Link to="/schools">
@@ -59,7 +64,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    logout: () => dispatch(logout()),
+    logoutUser: () => dispatch(logoutUser()),
   };
 };
 

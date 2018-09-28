@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { addStudent, deleteStudent, updateStudent } from './store';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 class StudentCreate extends Component {
   constructor() {
@@ -24,9 +24,9 @@ class StudentCreate extends Component {
   setFormValues() {
     const { id, students, history } = this.props;
     if (id == 'create') {
-      const schoolId = history.location.state
-        ? history.location.state.schoolId * 1
-        : '';
+      const schoolId = history.location.state ?
+        history.location.state.schoolId * 1 :
+        '';
       return this.setState({
         firstName: '',
         lastName: '',
@@ -40,7 +40,6 @@ class StudentCreate extends Component {
       firstName,
       lastName,
       gpa,
-      //handles schoolId:null students
       schoolId: schoolId || '',
     });
   }
@@ -62,7 +61,8 @@ class StudentCreate extends Component {
       this.props
         .addStudent(this.state)
         .then(() => this.props.history.push('/students'));
-    } else {
+    }
+    else {
       this.props
         .updateStudent(this.state, this.props.id * 1)
         .then(() => this.props.history.push('/students'));

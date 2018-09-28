@@ -12,7 +12,6 @@ class Schools extends Component {
         </p>
       );
     }
-
     const { schools, students } = this.props;
     const studentCount = school => {
       const studentList = students.filter(

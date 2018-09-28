@@ -72,7 +72,7 @@ const _loginUser = user => {
 };
 const _logoutUser = () => {
   return {
-    type: LOGOUTUSER,
+    type: LOGOUT_USER,
   };
 };
 
@@ -89,59 +89,59 @@ const initialState = {
 //reducer
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_SCHOOLS:
-      return { ...state, schools: action.schools };
-    case GET_STUDENTS:
-      return { ...state, students: action.students };
-    case ADD_STUDENT:
-      return { ...state, students: [...state.students, action.student] };
-    case ADD_SCHOOL:
-      return { ...state, schools: [...state.schools, action.school] };
-    case DELETE_STUDENT:
-      const student = state.students.find(s => s.id == action.id);
-      return {
-        ...state,
-        students: state.students.filter(s => s != student),
-      };
-    case DELETE_SCHOOL:
-      const newStudents = state.students.map(function(student) {
-        if (student.schoolId == action.id) {
-          student.schoolId = null;
-        }
-        return student;
-      });
-      return {
-        ...state,
-        schools: state.schools.filter(s => s.id != action.id),
-        students: newStudents,
-      };
-    case UPDATE_STUDENT:
-      return {
-        ...state,
-        students: state.students.map(s => {
-          return s.id == action.student.id ? action.student : s;
-        }),
-      };
-    case UPDATE_SCHOOL:
-      return {
-        ...state,
-        schools: state.schools.map(
-          s => (s.id == action.school.id ? action.school : s)
-        ),
-      };
-    case LOGIN_USER:
-      return {
-        ...state,
-        user: action.user,
-      };
-    case LOGOUT_USER:
-      return {
-        ...state,
-        user: {},
-      };
+  case GET_SCHOOLS:
+    return { ...state, schools: action.schools };
+  case GET_STUDENTS:
+    return { ...state, students: action.students };
+  case ADD_STUDENT:
+    return { ...state, students: [...state.students, action.student] };
+  case ADD_SCHOOL:
+    return { ...state, schools: [...state.schools, action.school] };
+  case DELETE_STUDENT:
+    const student = state.students.find(s => s.id == action.id);
+    return {
+      ...state,
+      students: state.students.filter(s => s != student),
+    };
+  case DELETE_SCHOOL:
+    const newStudents = state.students.map(function (student) {
+      if (student.schoolId == action.id) {
+        student.schoolId = null;
+      }
+      return student;
+    });
+    return {
+      ...state,
+      schools: state.schools.filter(s => s.id != action.id),
+      students: newStudents,
+    };
+  case UPDATE_STUDENT:
+    return {
+      ...state,
+      students: state.students.map(s => {
+        return s.id == action.student.id ? action.student : s;
+      }),
+    };
+  case UPDATE_SCHOOL:
+    return {
+      ...state,
+      schools: state.schools.map(
+        s => (s.id == action.school.id ? action.school : s)
+      ),
+    };
+  case LOGIN_USER:
+    return {
+      ...state,
+      user: action.user,
+    };
+  case LOGOUT_USER:
+    return {
+      ...state,
+      user: {},
+    };
 
-    default:
-      return state;
+  default:
+    return state;
   }
 };
 

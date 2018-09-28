@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { loginUser } from './store';
 
 class Login extends Component {
@@ -26,10 +26,7 @@ class Login extends Component {
   }
 
   render() {
-    const { user, action } = this.props;
-    if (user.username) {
-      return <Redirect to="/auth/logout" />;
-    }
+    const { action } = this.props;
     const login = action == 'login';
     return (
       <div>
@@ -56,7 +53,7 @@ class Login extends Component {
             <button onClick={this.handleSubmit}>Submit</button>
           </form>
         ) : (
-          <p>You have logged out.</p>
+          <p>You are not logged in. Log in <Link to="/auth/login">here</Link>.</p>
         )}
       </div>
     );

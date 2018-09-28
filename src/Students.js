@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
-import { checkUser } from './store';
+import { Link } from 'react-router-dom';
 
 class Students extends Component {
   render() {
@@ -55,13 +54,8 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    checkUser: () => dispatch(checkUser()),
-  };
-};
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(Students);
