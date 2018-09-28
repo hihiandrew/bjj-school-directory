@@ -4,88 +4,35 @@ const PORT = process.env.PORT || 3000;
 const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const session = require('express-session')
-const { db, seed, School, Student } = require('./db');
+const session = require('express-session');
+const { db, seed } = require('./db');
 
+//server logging middleware
 server.use(morgan('dev'));
+
+//body parser middleware
 server.use(bodyParser.json());
+
+//serving public folder
 server.use(express.static(path.join(__dirname, 'public')));
 server.use('/dist', express.static(path.join(__dirname, 'dist')));
-server.use(session({
-  secret: 'kimura',
-  resave: false,
-  saveUnitialized: false,
-}))
 
-server.get('/api/schools', (req, res, next) => {
-  School.findAll().then(schools => {
-    res.json(schools);
-  });
-});
+//session authentication middleware
+server.use(
+  session({
+    secret: 'kimura',
+    resave: false,
+    saveUnitialized: false,
+  })
+);
 
-server.get('/api/students', (req, res, next) => {
-  Student.findAll().then(students => {
-    res.json(students);
-  });
-});
+//routes
+server.use('/api', require('./routes/api'));
+server.use('/schools', require('./routes/schools'));
+server.use('/students', require('./routes/students'));
+server.use('/auth', require('./routes/auth'));
 
-server.post('/schools/create', (req, res, next) => {
-  School.create(req.body)
-    .then(school => res.json(school))
-    .catch(next);
-});
-
-server.post('/students/create', (req, res, next) => {
-  const { firstName, lastName, gpa, schoolId } = req.body;
-  const student = Student.build({ firstName, lastName, gpa });
-  if (schoolId) {
-    student.schoolId = schoolId;
-  }
-  student
-    .save()
-    .then(student => res.json(student))
-    .catch(next);
-});
-
-server.delete('/schools/:id', (req, res, next) => {
-  School.findById(req.params.id)
-    .then(school => school.destroy())
-    .then(() => res.sendStatus(200))
-    .catch(next);
-});
-
-server.delete('/students/:id', (req, res, next) => {
-  Student.findById(req.params.id)
-    .then(student => student.destroy())
-    .then(() => res.sendStatus(200))
-    .catch(next);
-});
-
-server.put('/schools/:id', (req, res, next) => {
-  // console.log('PUT SCHOOLS:');
-  // console.log(req.body);
-  School.findById(req.params.id)
-    .then(school => school.update(req.body))
-    .then(school => res.json(school))
-    .catch(next);
-});
-
-server.put('/students/:id', (req, res, next) => {
-  // console.log('PUT STUDENTS:');
-  // console.log(req);
-  const { schoolId } = req.body;
-  const newSchoolId = schoolId ? schoolId : null;
-  Student.findById(req.params.id)
-    .then(student => {
-      student.setSchool(newSchoolId);
-      return student.update(req.body);
-    })
-    .then(student => {
-      res.json(student);
-    })
-    .catch(next);
-});
-
+//server sync and seed
 db.sync({ force: true })
   .then(() => {
     console.log('Database synced');

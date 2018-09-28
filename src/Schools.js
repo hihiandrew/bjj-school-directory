@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class Schools extends Component {
   render() {
+    if (!this.props.user.id) {
+      return (
+        <p>
+          You are not authorized to view this page. Please{' '}
+          <Link to="/auth/login">login</Link>.
+        </p>
+      );
+    }
+
     const { schools, students } = this.props;
     const studentCount = school => {
       const studentList = students.filter(
@@ -11,6 +20,7 @@ class Schools extends Component {
       );
       return studentList.length;
     };
+
     return (
       <div>
         <ul>
@@ -36,6 +46,7 @@ const mapStateToProps = state => {
   return {
     schools: state.schools,
     students: state.students,
+    user: state.user,
   };
 };
 

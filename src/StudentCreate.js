@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { addStudent, deleteStudent, updateStudent } from './store';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 class StudentCreate extends Component {
   constructor() {
@@ -69,6 +70,15 @@ class StudentCreate extends Component {
   }
 
   render() {
+    if (!this.props.user.id) {
+      return (
+        <p>
+          You are not authorized to view this page. Please{' '}
+          <Link to="/auth/login">login</Link>.
+        </p>
+      );
+    }
+
     const { id, schools, deleteStudent } = this.props;
     const createForm = this.props.id == 'create';
     return (
@@ -140,6 +150,7 @@ const mapStateToProps = state => {
   return {
     schools: state.schools,
     students: state.students,
+    user: state.user,
   };
 };
 

@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { checkUser } from './store';
 
 class Students extends Component {
   render() {
+    if (!this.props.user.id) {
+      return (
+        <p>
+          You are not authorized to view this page. Please{' '}
+          <Link to="/auth/login">login</Link>.
+        </p>
+      );
+    }
     const { students, schools } = this.props;
     const findSchool = student => {
       const foundSchool = schools.find(school => school.id == student.schoolId);
@@ -42,10 +51,17 @@ const mapStateToProps = state => {
   return {
     students: state.students,
     schools: state.schools,
+    user: state.user,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    checkUser: () => dispatch(checkUser()),
   };
 };
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Students);

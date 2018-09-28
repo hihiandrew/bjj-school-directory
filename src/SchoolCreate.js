@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { addSchool, updateSchool, deleteSchool } from './store';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import StudentList from './StudentList';
 import AddStudents from './AddStudents';
 
@@ -67,6 +67,15 @@ class SchoolCreate extends Component {
   }
 
   render() {
+    if (!this.props.user.id) {
+      return (
+        <p>
+          You are not authorized to view this page. Please{' '}
+          <Link to="/auth/login">login</Link>.
+        </p>
+      );
+    }
+
     const { id, history } = this.props;
     const createForm = id == 'create';
     return (
@@ -124,6 +133,7 @@ const mapStateToProps = state => {
   return {
     schools: state.schools,
     students: state.students,
+    user: state.user,
   };
 };
 
