@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { loginUser } from './store';
+import { loginUser, signupUser } from './store';
 
 class Login extends Component {
   constructor() {
@@ -22,13 +22,18 @@ class Login extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.loginUser(this.state);
+    const { action } = this.props;
+    if (action == 'login') {
+      this.props.loginUser(this.state);
+    } else {
+      this.props.signupUser(this.state);
+    }
     this.props.history.push('/');
   }
 
   render() {
     const { action } = this.props;
-    const login = action == 'login';
+    const login = action == 'login' || action == 'signup';
     return (
       <div>
         {login ? (
@@ -51,7 +56,9 @@ class Login extends Component {
                 value={this.state.password}
               />
             </div>
-            <button onClick={this.handleSubmit}>Submit</button>
+            <button onClick={this.handleSubmit}>
+              {action == 'login' ? 'Login' : 'Signup'}
+            </button>
           </form>
         ) : (
           <p>
@@ -72,6 +79,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     loginUser: user => dispatch(loginUser(user)),
+    signupUser: user => dispatch(signupUser(user)),
   };
 };
 

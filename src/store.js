@@ -279,6 +279,15 @@ export const logoutUser = () => {
   };
 };
 
+export const signupUser = user => {
+  return dispatch => {
+    return axios
+      .post('/auth/signup', user)
+      .then(resp => dispatch(_loadUser(resp.data)))
+      .catch(console.error.bind(console));
+  };
+};
+
 //store
 export const store = createStore(
   reducer,
