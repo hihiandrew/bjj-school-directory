@@ -152,6 +152,7 @@ const mapStateToProps = state => {
     schools: state.schools,
     students: state.students,
     user: state.user,
+    loaded: state.loaded,
   };
 };
 

@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { initialLoad, getSchools, getStudents, checkUser } from './store';
 
 class App extends Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.initialLoad();
   }
 

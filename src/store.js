@@ -26,7 +26,7 @@ const _loadingData = () => {
 
 const _loadedData = () => {
   return {
-    type: LOADING_DATA,
+    type: LOADED_DATA,
   };
 };
 
@@ -93,7 +93,7 @@ const initialState = {
     usermame: '',
     password: '',
   },
-  loaded: true,
+  loaded: false,
 };
 
 //reducer
@@ -249,8 +249,6 @@ export const checkUser = () => {
     return axios
       .get('/auth/me')
       .then(resp => {
-        console.log('checkUser thunk');
-        console.log(resp.data);
         dispatch(_loadUser(resp.data));
       })
       .catch(console.error.bind(console));
@@ -264,9 +262,7 @@ export const initialLoad = () => {
       dispatch(checkUser()),
       dispatch(getStudents()),
       dispatch(getSchools()),
-    ]).then(() => {
-      dispatch(_loadedData());
-    });
+    ]).then(() => dispatch(_loadedData()));
   };
 };
 
