@@ -12,8 +12,7 @@ const UPDATE_STUDENT = 'UPDATE_STUDENT';
 const UPDATE_SCHOOL = 'UPDATE_SCHOOL';
 const DELETE_STUDENT = 'DELETE_STUDENT';
 const DELETE_SCHOOL = 'DELETE_SCHOOL';
-const LOGIN_USER = 'LOGIN_USER';
-const LOGOUT_USER = 'LOGOUT_USER';
+const LOAD_USER = 'LOAD_USER';
 
 //action creator
 const _getStudents = students => {
@@ -64,15 +63,10 @@ const _deleteSchool = id => {
     id,
   };
 };
-const _loginUser = user => {
+const _loadUser = user => {
   return {
-    type: LOGIN_USER,
+    type: LOAD_USER,
     user,
-  };
-};
-const _logoutUser = () => {
-  return {
-    type: LOGOUT_USER,
   };
 };
 
@@ -89,59 +83,54 @@ const initialState = {
 //reducer
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-  case GET_SCHOOLS:
-    return { ...state, schools: action.schools };
-  case GET_STUDENTS:
-    return { ...state, students: action.students };
-  case ADD_STUDENT:
-    return { ...state, students: [...state.students, action.student] };
-  case ADD_SCHOOL:
-    return { ...state, schools: [...state.schools, action.school] };
-  case DELETE_STUDENT:
-    const student = state.students.find(s => s.id == action.id);
-    return {
-      ...state,
-      students: state.students.filter(s => s != student),
-    };
-  case DELETE_SCHOOL:
-    const newStudents = state.students.map(function (student) {
-      if (student.schoolId == action.id) {
-        student.schoolId = null;
-      }
-      return student;
-    });
-    return {
-      ...state,
-      schools: state.schools.filter(s => s.id != action.id),
-      students: newStudents,
-    };
-  case UPDATE_STUDENT:
-    return {
-      ...state,
-      students: state.students.map(s => {
-        return s.id == action.student.id ? action.student : s;
-      }),
-    };
-  case UPDATE_SCHOOL:
-    return {
-      ...state,
-      schools: state.schools.map(
-        s => (s.id == action.school.id ? action.school : s)
-      ),
-    };
-  case LOGIN_USER:
-    return {
-      ...state,
-      user: action.user,
-    };
-  case LOGOUT_USER:
-    return {
-      ...state,
-      user: {},
-    };
+    case GET_SCHOOLS:
+      return { ...state, schools: action.schools };
+    case GET_STUDENTS:
+      return { ...state, students: action.students };
+    case ADD_STUDENT:
+      return { ...state, students: [...state.students, action.student] };
+    case ADD_SCHOOL:
+      return { ...state, schools: [...state.schools, action.school] };
+    case DELETE_STUDENT:
+      const student = state.students.find(s => s.id == action.id);
+      return {
+        ...state,
+        students: state.students.filter(s => s != student),
+      };
+    case DELETE_SCHOOL:
+      const newStudents = state.students.map(function(student) {
+        if (student.schoolId == action.id) {
+          student.schoolId = null;
+        }
+        return student;
+      });
+      return {
+        ...state,
+        schools: state.schools.filter(s => s.id != action.id),
+        students: newStudents,
+      };
+    case UPDATE_STUDENT:
+      return {
+        ...state,
+        students: state.students.map(s => {
+          return s.id == action.student.id ? action.student : s;
+        }),
+      };
+    case UPDATE_SCHOOL:
+      return {
+        ...state,
+        schools: state.schools.map(
+          s => (s.id == action.school.id ? action.school : s)
+        ),
+      };
+    case LOAD_USER:
+      return {
+        ...state,
+        user: action.user,
+      };
 
-  default:
-    return state;
+    default:
+      return state;
   }
 };
 
@@ -222,7 +211,7 @@ export const loginUser = user => {
   return dispatch => {
     return axios
       .put('/auth/login', user)
-      .then(resp => dispatch(_loginUser(resp.data)))
+      .then(resp => dispatch(_loadUser(resp.data)))
       .catch(console.error.bind(console));
   };
 };
@@ -231,17 +220,16 @@ export const checkUser = () => {
   return dispatch => {
     return axios
       .get('/auth/me')
-      .then(resp => dispatch(_loginUser(resp.data)))
+      .then(resp => dispatch(_loadUser(resp.data)))
       .catch(console.error.bind(console));
   };
 };
 
 export const logoutUser = () => {
   return dispatch => {
-    return axios;
-    axios
+    return axios
       .delete('/auth/logout')
-      .then(() => dispatch(_logoutUser()))
+      .then(() => dispatch(_loadUser(initialState.user)))
       .catch(console.error.bind(console));
   };
 };

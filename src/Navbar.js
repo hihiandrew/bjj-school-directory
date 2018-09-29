@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutUser } from './store';
 
@@ -15,10 +15,9 @@ class Navbar extends Component {
   }
 
   render() {
-
     const { schools, students, user } = this.props;
-    console.log('USER: ')
-    console.log(user)
+    console.log('USER: ');
+    console.log(user);
     return (
       <div>
         {!user.username ? (
@@ -33,10 +32,10 @@ class Navbar extends Component {
         ) : (
           <div>
             <div>
-               <p>
-              Logged in as {user.username} <br />
+              <p>
+                Logged in as {user.username} <br />
               </p>
-            <p onClick={this.handleLogout}>Logout</p>
+              <p onClick={this.handleLogout}>Logout</p>
             </div>
 
             <ul>

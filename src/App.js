@@ -10,17 +10,18 @@ import { connect } from 'react-redux';
 import { getSchools, getStudents, checkUser } from './store';
 
 class App extends Component {
-  componentDidMount() {
-    this.props.checkUser()
+  componentWillMount() {
+    this.props.checkUser();
     this.props.getStudents();
     this.props.getSchools();
   }
 
   render() {
-
+    console.log('App props:');
+    console.log(this.props);
     const renderNavbar = ({ history }) => {
-      return <Navbar history={history} />
-    }
+      return <Navbar history={history} />;
+    };
 
     const renderSchoolCreate = ({ match, history }) => {
       return <SchoolCreate id={match.params.id} history={history} />;

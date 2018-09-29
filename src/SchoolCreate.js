@@ -59,8 +59,7 @@ class SchoolCreate extends Component {
     const { id, history, addSchool, updateSchool } = this.props;
     if (id == 'create') {
       return addSchool(this.state).then(() => history.push('/schools'));
-    }
-    else {
+    } else {
       updateSchool(this.state, id * 1).then(() =>
         history.push(`/schools/${id}`)
       );

@@ -41,11 +41,11 @@ const seed = async () => {
   const [guest, admin] = await Promise.all([
     Auth.create({
       username: 'guest',
-      password: 'guestpw',
+      password: 'guest',
     }),
     Auth.create({
       username: 'admin',
-      password: 'adminpw',
+      password: 'admin',
     }),
   ]);
   await Promise.all([
