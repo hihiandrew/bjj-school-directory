@@ -20,20 +20,21 @@ class SchoolCreate extends Component {
   }
 
   componentDidMount() {
-    this.setFormValues();
+    if (this.props.loaded) {
+      this.setFormValues();
+    }
   }
 
   setFormValues() {
-    if (this.props.id == 'create') {
+    const { id, schools } = this.props;
+    if (id == 'create') {
       return this.setState({
         name: '',
         address: '',
         description: '',
       });
     }
-    const _school = this.props.schools.find(
-      school => school.id * 1 == this.props.id * 1
-    );
+    const _school = schools.find(school => school.id * 1 == id * 1);
     const { name, address, description } = _school;
     return this.setState({
       name,
@@ -134,6 +135,7 @@ const mapStateToProps = state => {
     schools: state.schools,
     students: state.students,
     user: state.user,
+    loaded: state.loaded,
   };
 };
 

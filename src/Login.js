@@ -23,6 +23,7 @@ class Login extends Component {
   handleSubmit(e) {
     e.preventDefault();
     this.props.loginUser(this.state);
+    this.props.history.push('/');
   }
 
   render() {
@@ -53,7 +54,9 @@ class Login extends Component {
             <button onClick={this.handleSubmit}>Submit</button>
           </form>
         ) : (
-          <p>You are not logged in. Log in <Link to="/auth/login">here</Link>.</p>
+          <p>
+            You are not logged in. Log in <Link to="/auth/login">here</Link>.
+          </p>
         )}
       </div>
     );

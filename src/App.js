@@ -7,18 +7,15 @@ import Students from './Students';
 import SchoolCreate from './SchoolCreate';
 import StudentCreate from './StudentCreate';
 import { connect } from 'react-redux';
-import { getSchools, getStudents, checkUser } from './store';
+import { initialLoad, getSchools, getStudents, checkUser } from './store';
 
 class App extends Component {
   componentWillMount() {
-    this.props.checkUser();
-    this.props.getStudents();
-    this.props.getSchools();
+    this.props.initialLoad();
   }
 
   render() {
-    console.log('App props:');
-    console.log(this.props);
+    console.log('App Render Method:');
     const renderNavbar = ({ history }) => {
       return <Navbar history={history} />;
     };
@@ -57,13 +54,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getSchools: () => {
-      dispatch(getSchools());
-    },
-    getStudents: () => {
-      dispatch(getStudents());
-    },
+    getSchools: () => dispatch(getSchools()),
+    getStudents: () => dispatch(getStudents()),
     checkUser: () => dispatch(checkUser()),
+    initialLoad: () => dispatch(initialLoad()),
   };
 };
 

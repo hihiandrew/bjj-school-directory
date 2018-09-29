@@ -18,15 +18,17 @@ class StudentCreate extends Component {
   }
 
   componentDidMount() {
-    this.setFormValues();
+    if (this.props.loaded) {
+      this.setFormValues();
+    }
   }
 
   setFormValues() {
     const { id, students, history } = this.props;
     if (id == 'create') {
-      const schoolId = history.location.state ?
-        history.location.state.schoolId * 1 :
-        '';
+      const schoolId = history.location.state
+        ? history.location.state.schoolId * 1
+        : '';
       return this.setState({
         firstName: '',
         lastName: '',
@@ -61,8 +63,7 @@ class StudentCreate extends Component {
       this.props
         .addStudent(this.state)
         .then(() => this.props.history.push('/students'));
-    }
-    else {
+    } else {
       this.props
         .updateStudent(this.state, this.props.id * 1)
         .then(() => this.props.history.push('/students'));

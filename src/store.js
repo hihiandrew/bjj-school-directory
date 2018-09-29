@@ -13,8 +13,23 @@ const UPDATE_SCHOOL = 'UPDATE_SCHOOL';
 const DELETE_STUDENT = 'DELETE_STUDENT';
 const DELETE_SCHOOL = 'DELETE_SCHOOL';
 const LOAD_USER = 'LOAD_USER';
+const LOADING_DATA = 'LOADING_DATA';
+const LOADED_DATA = 'LOADED_DATA';
 
 //action creator
+
+const _loadingData = () => {
+  return {
+    type: LOADING_DATA,
+  };
+};
+
+const _loadedData = () => {
+  return {
+    type: LOADING_DATA,
+  };
+};
+
 const _getStudents = students => {
   return {
     type: GET_STUDENTS,
@@ -78,6 +93,7 @@ const initialState = {
     usermame: '',
     password: '',
   },
+  loaded: true,
 };
 
 //reducer
@@ -127,6 +143,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.user,
+      };
+
+    case LOADING_DATA:
+      return {
+        ...state,
+        loaded: false,
+      };
+
+    case LOADED_DATA:
+      return {
+        ...state,
+        loaded: true,
       };
 
     default:
@@ -220,8 +248,25 @@ export const checkUser = () => {
   return dispatch => {
     return axios
       .get('/auth/me')
-      .then(resp => dispatch(_loadUser(resp.data)))
+      .then(resp => {
+        console.log('checkUser thunk');
+        console.log(resp.data);
+        dispatch(_loadUser(resp.data));
+      })
       .catch(console.error.bind(console));
+  };
+};
+
+export const initialLoad = () => {
+  return dispatch => {
+    dispatch(_loadingData());
+    return Promise.all([
+      dispatch(checkUser()),
+      dispatch(getStudents()),
+      dispatch(getSchools()),
+    ]).then(() => {
+      dispatch(_loadedData());
+    });
   };
 };
 

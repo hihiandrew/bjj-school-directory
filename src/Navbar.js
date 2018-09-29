@@ -16,8 +16,6 @@ class Navbar extends Component {
 
   render() {
     const { schools, students, user } = this.props;
-    console.log('USER: ');
-    console.log(user);
     return (
       <div>
         {!user.username ? (

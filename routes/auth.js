@@ -28,7 +28,10 @@ router.get('/me', (req, res, next) => {
     next(err => console.log(err));
   } else {
     Auth.findById(req.session.userId)
-      .then(user => res.json(user))
+      .then(user => {
+        console.log(user);
+        res.json(user);
+      })
       .catch(next);
   }
 });
