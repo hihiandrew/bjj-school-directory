@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { addSchool, updateSchool, deleteSchool } from './store';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import StudentList from './StudentList';
 import AddStudents from './AddStudents';
 
@@ -12,11 +12,13 @@ class SchoolCreate extends Component {
       name: '',
       address: '',
       description: '',
+      view: true,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setFormValues = this.setFormValues.bind(this);
     this.handleDeleteSchool = this.handleDeleteSchool.bind(this);
+    this.toggleView = this.toggleView.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +43,11 @@ class SchoolCreate extends Component {
       address,
       description,
     });
+  }
+
+  toggleView(e) {
+    e.preventDefault();
+    this.setState({ view: !this.state.view });
   }
 
   handleDeleteSchool(e) {
@@ -78,34 +85,57 @@ class SchoolCreate extends Component {
     }
 
     const { id, history } = this.props;
+    const { name, address, description, view } = this.state;
     const createForm = id == 'create';
     return (
       <div>
-        <h3>{createForm ? 'Create' : 'Update'} School</h3>
+        <h3>
+          {createForm ? 'Create' : ''}
+          School
+          {view ? ' Details ' : ' Update '}
+          <button onClick={this.toggleView}>{view ? 'Update' : 'View'}</button>
+        </h3>
+
         <form onSubmit={this.handleSubmit}>
-          <p>Name: </p>{' '}
-          <input
-            value={this.state.name}
-            name="name"
-            onChange={this.handleChange}
-          />
-          <p>Address: </p>{' '}
-          <input
-            value={this.state.address}
-            name="address"
-            onChange={this.handleChange}
-          />
+          <p>Name: </p>
+          {view ? (
+            <p>{name}</p>
+          ) : (
+            <input
+              value={this.state.name}
+              name="name"
+              onChange={this.handleChange}
+            />
+          )}
+          <p>Address: </p>
+          {view ? (
+            address
+          ) : (
+            <input
+              value={this.state.address}
+              name="address"
+              onChange={this.handleChange}
+            />
+          )}
           <p>Description: </p>{' '}
-          <input
-            value={this.state.description}
-            name="description"
-            onChange={this.handleChange}
-          />
+          {view ? (
+            description
+          ) : (
+            <input
+              value={this.state.description}
+              name="description"
+              onChange={this.handleChange}
+            />
+          )}
           <br />
           <br />
-          <button type="submit" disabled={!this.state.name}>
-            {createForm ? 'Create' : 'Update'} School
-          </button>
+          {view ? (
+            ''
+          ) : (
+            <button type="submit" disabled={!this.state.name}>
+              {createForm ? 'Create' : 'Update'} School
+            </button>
+          )}
           {!createForm ? (
             <div>
               <button onClick={this.handleDeleteSchool}>Delete School</button>

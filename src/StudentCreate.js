@@ -4,46 +4,76 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 class StudentCreate extends Component {
-  constructor() {
-    super();
-    this.state = {
-      firstName: '',
-      lastName: '',
-      gpa: '',
-      schoolId: '',
-    };
+  constructor(props) {
+    super(props);
+    this._student = this.props.students.find(
+      student => student.id * 1 == this.props.id * 1
+    );
+
+    this.state =
+      this.props.id == 'create'
+        ? {
+            firstName: '',
+            lastName: '',
+            gpa: '',
+            schoolId: '',
+            view: false,
+          }
+        : {
+            firstName: this._student.firstName,
+            lastName: this._student.lastName,
+            gpa: this._student.gpa,
+            schoolId: this._student.schoolId,
+            view: true,
+          };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.setFormValues = this.setFormValues.bind(this);
+    // this.setFormValues = this.setFormValues.bind(this);
+    this.toggleView = this.toggleView.bind(this);
   }
 
-  componentDidMount() {
-    if (this.props.loaded) {
-      this.setFormValues();
-    }
-  }
+  // componentWillMount() {
+  //   if (this.props.loaded) {
+  //     this.setFormValues();
+  //   }
+  //   console.log('stucreate state:');
+  //   console.log(this.state);
+  // }
 
-  setFormValues() {
-    const { id, students, history } = this.props;
-    if (id == 'create') {
-      const schoolId = history.location.state
-        ? history.location.state.schoolId * 1
-        : '';
-      return this.setState({
-        firstName: '',
-        lastName: '',
-        gpa: '',
-        schoolId,
-      });
-    }
-    const _student = students.find(student => student.id * 1 == id * 1);
-    const { firstName, lastName, gpa, schoolId } = _student;
-    return this.setState({
-      firstName,
-      lastName,
-      gpa,
-      schoolId: schoolId || '',
-    });
+  // setFormValues() {
+  //   const { id, students, history } = this.props;
+  //   console.log('setform');
+  //   console.log(this.props);
+  //   if (id == 'create') {
+  //     const schoolId = history.location.state
+  //       ? history.location.state.schoolId * 1
+  //       : '';
+  //     console.log('schoolId:');
+  //     console.log(schoolId);
+  //     this.setState({
+  //       firstName: '',
+  //       lastName: '',
+  //       gpa: '',
+  //       schoolId,
+  //       view: false,
+  //     });
+  //     console.log(this.state);
+  //   }
+  //   const _student = students.find(
+  //     student => student.id * 1 == this.props.id * 1
+  //   );
+  //   const { firstName, lastName, gpa, schoolId } = _student;
+  //   return this.setState({
+  //     firstName,
+  //     lastName,
+  //     gpa,
+  //     schoolId: schoolId || '',
+  //   });
+  // }
+
+  toggleView(e) {
+    e.preventDefault();
+    this.setState({ view: !this.state.view });
   }
 
   handleChange(e) {
@@ -71,6 +101,7 @@ class StudentCreate extends Component {
   }
 
   render() {
+    console.log('StudentCreate render');
     if (!this.props.user.id) {
       return (
         <p>
@@ -80,54 +111,90 @@ class StudentCreate extends Component {
       );
     }
 
-    const { id, schools, deleteStudent } = this.props;
+    const { id, schools, students, deleteStudent } = this.props;
+    const { view, firstName, lastName, gpa } = this.state;
     const createForm = this.props.id == 'create';
+    const student = students.find(s => s.id == id);
+    const school = schools.find(s => s.id == student.schoolId);
+
     return (
       <div>
-        <h3>{createForm ? 'Create' : 'Update'} Student</h3>
+        <h3>
+          {createForm ? 'Create ' : ''}
+          Student
+          {view ? ' Details ' : ' Update '}
+          <button onClick={this.toggleView}>{view ? 'Update' : 'View'}</button>
+        </h3>
+
         <form onSubmit={this.handleSubmit}>
           <p>First Name: </p>
-          <input
-            value={this.state.firstName}
-            name="firstName"
-            onChange={this.handleChange}
-          />
+          {view ? (
+            <p>{firstName}</p>
+          ) : (
+            <input
+              value={this.state.firstName}
+              name="firstName"
+              onChange={this.handleChange}
+            />
+          )}
+
           <p>Last Name: </p>
-          <input
-            value={this.state.lastName}
-            name="lastName"
-            onChange={this.handleChange}
-          />
+          {view ? (
+            <p>{lastName}</p>
+          ) : (
+            <input
+              value={this.state.lastName}
+              name="lastName"
+              onChange={this.handleChange}
+            />
+          )}
+
           <p>GPA: </p>
-          <input
-            value={this.state.gpa}
-            name="gpa"
-            type="number"
-            onChange={this.handleChange}
-          />
+          {view ? (
+            <p>{gpa}</p>
+          ) : (
+            <input
+              value={this.state.gpa}
+              name="gpa"
+              type="number"
+              onChange={this.handleChange}
+            />
+          )}
+
           <p>School: </p>
-          <select
-            name="schoolId"
-            onChange={this.handleChange}
-            value={this.state.schoolId}
-          >
-            <option value="">Unaffiliated</option>
-            {schools.map(school => {
-              return (
-                <option key={school.id} value={school.id}>
-                  {school.name}
-                </option>
-              );
-            })}
-          </select>
+          {view ? (
+            <p>{school ? school.name : 'Unaffiliated'}</p>
+          ) : (
+            <select
+              name="schoolId"
+              onChange={this.handleChange}
+              value={this.state.schoolId}
+            >
+              <option value="">Unaffiliated</option>
+              {schools.map(school => {
+                return (
+                  <option key={school.id} value={school.id}>
+                    {school.name}
+                  </option>
+                );
+              })}
+            </select>
+          )}
+
           <br />
           <br />
-          <button
-            type="submit"
-            disabled={!this.state.firstName || !this.state.lastName}
-          >
-            {createForm ? 'Create' : 'Update'} Student
-          </button>
+
+          {view ? (
+            ''
+          ) : (
+            <button
+              type="submit"
+              disabled={!this.state.firstName || !this.state.lastName}
+            >
+              {createForm ? 'Create' : 'Update'} Student
+            </button>
+          )}
+
           {!createForm ? (
             <button
               onClick={e => {
