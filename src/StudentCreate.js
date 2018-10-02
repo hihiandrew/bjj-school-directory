@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 class StudentCreate extends Component {
   constructor(props) {
     super(props);
+
     this._student = this.props.students.find(
       student => student.id * 1 == this.props.id * 1
     );
@@ -16,60 +17,24 @@ class StudentCreate extends Component {
             firstName: '',
             lastName: '',
             gpa: '',
-            schoolId: '',
+            schoolId: this.props.history.location.state
+              ? this.props.history.location.state.schoolId * 1
+              : '',
             view: false,
           }
         : {
             firstName: this._student.firstName,
             lastName: this._student.lastName,
-            gpa: this._student.gpa,
-            schoolId: this._student.schoolId,
+            gpa: this._student.gpa || '',
+            schoolId: this._student.schoolId || '',
             view: true,
           };
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    // this.setFormValues = this.setFormValues.bind(this);
     this.toggleView = this.toggleView.bind(this);
+    console.log(this.state);
   }
-
-  // componentWillMount() {
-  //   if (this.props.loaded) {
-  //     this.setFormValues();
-  //   }
-  //   console.log('stucreate state:');
-  //   console.log(this.state);
-  // }
-
-  // setFormValues() {
-  //   const { id, students, history } = this.props;
-  //   console.log('setform');
-  //   console.log(this.props);
-  //   if (id == 'create') {
-  //     const schoolId = history.location.state
-  //       ? history.location.state.schoolId * 1
-  //       : '';
-  //     console.log('schoolId:');
-  //     console.log(schoolId);
-  //     this.setState({
-  //       firstName: '',
-  //       lastName: '',
-  //       gpa: '',
-  //       schoolId,
-  //       view: false,
-  //     });
-  //     console.log(this.state);
-  //   }
-  //   const _student = students.find(
-  //     student => student.id * 1 == this.props.id * 1
-  //   );
-  //   const { firstName, lastName, gpa, schoolId } = _student;
-  //   return this.setState({
-  //     firstName,
-  //     lastName,
-  //     gpa,
-  //     schoolId: schoolId || '',
-  //   });
-  // }
 
   toggleView(e) {
     e.preventDefault();
@@ -92,11 +57,11 @@ class StudentCreate extends Component {
     if (this.props.id == 'create') {
       this.props
         .addStudent(this.state)
-        .then(() => this.props.history.push('/students'));
+        .then(() => this.setState({ view: true }));
     } else {
       this.props
         .updateStudent(this.state, this.props.id * 1)
-        .then(() => this.props.history.push('/students'));
+        .then(() => this.setState({ view: true }));
     }
   }
 
@@ -112,10 +77,8 @@ class StudentCreate extends Component {
     }
 
     const { id, schools, students, deleteStudent } = this.props;
-    const { view, firstName, lastName, gpa } = this.state;
+    const { view, firstName, lastName, gpa, schoolId } = this.state;
     const createForm = this.props.id == 'create';
-    const student = students.find(s => s.id == id);
-    const school = schools.find(s => s.id == student.schoolId);
 
     return (
       <div>
@@ -202,8 +165,7 @@ class StudentCreate extends Component {
                 deleteStudent(id);
               }}
             >
-              {' '}
-              Delete Student{' '}
+              Delete Student
             </button>
           ) : (
             ''

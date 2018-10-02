@@ -8,6 +8,7 @@ import AddStudents from './AddStudents';
 class SchoolCreate extends Component {
   constructor() {
     super();
+
     this.state = {
       name: '',
       address: '',
@@ -52,8 +53,8 @@ class SchoolCreate extends Component {
 
   handleDeleteSchool(e) {
     e.preventDefault();
-    const { id, history } = this.props;
-    this.props.deleteSchool(id).then(() => history.push('/schools'));
+    const { id, history, deleteSchool } = this.props;
+    deleteSchool(id).then(() => history.push('/schools'));
   }
 
   handleChange(e) {
@@ -66,10 +67,10 @@ class SchoolCreate extends Component {
     e.preventDefault();
     const { id, history, addSchool, updateSchool } = this.props;
     if (id == 'create') {
-      return addSchool(this.state).then(() => history.push('/schools'));
+      return addSchool(this.state).then(() => this.setState({ view: true }));
     } else {
       updateSchool(this.state, id * 1).then(() =>
-        history.push(`/schools/${id}`)
+        this.setState({ view: true })
       );
     }
   }
