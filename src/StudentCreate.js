@@ -33,7 +33,6 @@ class StudentCreate extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleView = this.toggleView.bind(this);
-    console.log(this.state);
   }
 
   toggleView(e) {

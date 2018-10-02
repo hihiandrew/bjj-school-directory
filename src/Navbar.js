@@ -37,12 +37,12 @@ class Navbar extends Component {
             </div>
 
             <ul>
-              <Link to="/schools">
-                <li>Schools ({schools.length})</li>
-              </Link>
-              <Link to="/students">
-                <li>Students ({students.length})</li>
-              </Link>
+              <li>
+                <Link to="/schools">Schools ({schools.length})</Link>
+              </li>
+              <li>
+                <Link to="/students">Students ({students.length})</Link>
+              </li>
             </ul>
           </div>
         )}
