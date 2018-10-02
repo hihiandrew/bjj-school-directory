@@ -15,7 +15,7 @@ class Navbar extends Component {
   }
 
   render() {
-    const { schools, students, user, history } = this.props;
+    const { schools, students, user, history, id } = this.props;
     return (
       <div>
         <nav class="navbar navbar-inverse navbar-static-top">
@@ -34,29 +34,33 @@ class Navbar extends Component {
               </button>
 
               {/* <!-- Navbar Brand --> */}
-              <a href="/" class="navbar-brand">
-                BJJ
-              </a>
+              <Link to="/home">
+                <a href="/home" class="navbar-brand">
+                  BJJ
+                </a>
+              </Link>
             </div>
 
             <div class="collapse navbar-collapse" id="exampleNavComponents">
               {/* <!-- Navbar Menu --> */}
               <ul class="nav navbar-nav navbar-right">
-                <li class="active">
-                  <a href="/">Home</a>
+                <li class={id == 'home' ? 'active' : ''}>
+                  <Link to="/home">Home</Link>
                 </li>
-                <li>
+                <li class={id == 'students' ? 'active' : ''}>
                   <Link to="/students">Students ({students.length})</Link>
                 </li>
-                <li>
+                <li class={id == 'schools' ? 'active' : ''}>
                   <Link to="/schools">Schools ({schools.length})</Link>
                 </li>
               </ul>
 
               {/* <!-- Navbar Button --> */}
-              <button
+              <a
                 type="button"
-                class="btn btn-default navbar-btn navbar-left"
+                // class="btn btn-default navbar-btn navbar-left"
+                class="btn btn-secondary btn-lg active navbar-left"
+                role="button"
                 onClick={
                   user.username
                     ? this.handleLogout
@@ -66,7 +70,7 @@ class Navbar extends Component {
                 }
               >
                 {user.username ? 'Logout' : 'Login'}
-              </button>
+              </a>
 
               {/* <!-- Navbar Text --> */}
               <p class="navbar-text">

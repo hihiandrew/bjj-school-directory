@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, HashRouter } from 'react-router-dom';
 import Navbar from './Navbar';
 import Login from './Login';
+import Home from './Home';
 import Schools from './Schools';
 import Students from './Students';
 import SchoolCreate from './SchoolCreate';
@@ -15,9 +16,8 @@ class App extends Component {
   }
 
   render() {
-    console.log('App Render Method:');
-    const renderNavbar = ({ history }) => {
-      return <Navbar history={history} />;
+    const renderNavbar = ({ match, history }) => {
+      return <Navbar id={match.params.id} history={history} />;
     };
 
     const renderSchoolCreate = ({ match, history }) => {
@@ -36,7 +36,7 @@ class App extends Component {
       <HashRouter>
         <div>
           <Route path="/" render={renderNavbar} />
-
+          <Route exact path="/home" component={Home} />
           <Route exact path="/auth/:action" render={renderAuth} />
           <Route exact path="/schools" component={Schools} />
           <Route exact path="/students" component={Students} />
