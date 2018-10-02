@@ -80,6 +80,9 @@ class StudentCreate extends Component {
     const { view, firstName, lastName, gpa, schoolId } = this.state;
     const createForm = this.props.id == 'create';
 
+    const student = students.find(s => s.id == id);
+    const school = student ? schools.find(s => s.id == student.schoolId) : {};
+
     return (
       <div>
         <h3>
