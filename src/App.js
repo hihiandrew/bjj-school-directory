@@ -36,7 +36,8 @@ class App extends Component {
       <HashRouter>
         <div>
           <Route path="/" render={renderNavbar} />
-          <Route exact path="/home" component={Home} />
+          <Route exact path="/" component={Home} />
+          {/* <Route exact path="/home" component={Home} /> */}
           <Route exact path="/auth/:action" render={renderAuth} />
           <Route exact path="/schools" component={Schools} />
           <Route exact path="/students" component={Students} />

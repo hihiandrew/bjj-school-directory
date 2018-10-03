@@ -52,20 +52,22 @@ class StudentCreate extends Component {
   }
 
   handleSubmit(e) {
+    const { id, history, addStudent } = this.props;
     e.preventDefault();
-    if (this.props.id == 'create') {
-      this.props
-        .addStudent(this.state)
-        .then(() => this.setState({ view: true }));
+    if (id == 'create') {
+      addStudent(this.state).then(user => {
+        console.log(user);
+        history.push(`/students/${user.id}`);
+      });
     } else {
-      this.props
-        .updateStudent(this.state, this.props.id * 1)
-        .then(() => this.setState({ view: true }));
+      updateStudent(this.state, id * 1).then(() =>
+        this.setState({ view: true })
+      );
     }
   }
 
   render() {
-    console.log('StudentCreate render');
+    console.log(this.state);
     if (!this.props.user.id) {
       return (
         <p>
@@ -75,7 +77,7 @@ class StudentCreate extends Component {
       );
     }
 
-    const { id, schools, students, deleteStudent } = this.props;
+    const { id, schools, students, deleteStudent, history } = this.props;
     const { view, firstName, lastName, gpa, schoolId } = this.state;
     const createForm = this.props.id == 'create';
 
@@ -165,6 +167,7 @@ class StudentCreate extends Component {
               onClick={e => {
                 e.preventDefault();
                 deleteStudent(id);
+                history.push('/students');
               }}
             >
               Delete Student

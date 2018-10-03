@@ -185,7 +185,10 @@ export const addStudent = student => {
   return dispatch => {
     return axios
       .post('/students/create', student)
-      .then(resp => dispatch(_addStudent(resp.data)))
+      .then(resp => {
+        dispatch(_addStudent(resp.data));
+        return resp.data;
+      })
       .catch(console.error.bind(console));
   };
 };
@@ -194,7 +197,10 @@ export const addSchool = school => {
   return dispatch => {
     return axios
       .post('/schools/create', school)
-      .then(resp => dispatch(_addSchool(resp.data)))
+      .then(resp => {
+        dispatch(_addSchool(resp.data));
+        return resp.data;
+      })
       .catch(console.error.bind(console));
   };
 };

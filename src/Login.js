@@ -59,6 +59,13 @@ class Login extends Component {
             <button onClick={this.handleSubmit}>
               {action == 'login' ? 'Login' : 'Signup'}
             </button>
+            {action == 'login' ? (
+              <p>
+                or signup <Link to="/auth/signup">here</Link>.
+              </p>
+            ) : (
+              ''
+            )}
           </form>
         ) : (
           <p>

@@ -68,7 +68,9 @@ class SchoolCreate extends Component {
     e.preventDefault();
     const { id, history, addSchool, updateSchool } = this.props;
     if (id == 'create') {
-      return addSchool(this.state).then(() => this.setState({ view: true }));
+      addSchool(this.state).then(school =>
+        history.push(`/schools/${school.id}`)
+      );
     } else {
       updateSchool(this.state, id * 1).then(() =>
         this.setState({ view: true })

@@ -34,10 +34,8 @@ class Navbar extends Component {
               </button>
 
               {/* <!-- Navbar Brand --> */}
-              <Link to="/home">
-                <a href="/home" class="navbar-brand">
-                  BJJ
-                </a>
+              <Link to="/">
+                <a class="navbar-brand">BJJ</a>
               </Link>
             </div>
 
@@ -45,7 +43,7 @@ class Navbar extends Component {
               {/* <!-- Navbar Menu --> */}
               <ul class="nav navbar-nav navbar-right">
                 <li class={id == 'home' ? 'active' : ''}>
-                  <Link to="/home">Home</Link>
+                  <Link to="/">Home</Link>
                 </li>
                 <li class={id == 'students' ? 'active' : ''}>
                   <Link to="/students">Students ({students.length})</Link>
@@ -81,36 +79,6 @@ class Navbar extends Component {
             </div>
           </div>
         </nav>
-
-        {/* {!user.username ? (
-          <div>
-            <p>
-              Not logged in <br />
-              <Link to="/auth/login">Login</Link>
-              {' or '}
-              <Link to="/auth/signup">Sign Up</Link>
-            </p>
-          </div>
-        ) : (
-          <div class="navbar navbar-default">
-            <div>
-              <ul>
-                <li>
-                  <Link to="/schools">Schools ({schools.length})</Link>
-                </li>
-                <li>
-                  <Link to="/students">Students ({students.length})</Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <p>
-                Logged in as {user.username} <br />
-              </p>
-              <p onClick={this.handleLogout}>Logout</p>
-            </div>
-          </div>
-        )} */}
       </div>
     );
   }
