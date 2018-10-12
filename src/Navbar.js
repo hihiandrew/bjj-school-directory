@@ -19,7 +19,7 @@ class Navbar extends Component {
     return (
       <div>
         <nav class="navbar navbar-inverse">
-          <div class="container-fluid">
+          <div class="container">
 
             {/* <!-- Navbar Header [toggle + brand] --> */}
             <div class="navbar-header">
@@ -68,7 +68,7 @@ class Navbar extends Component {
                 </li>
                 <li>
                   <a
-                  class="btn btn-secondary btn-lg navbar-right"
+                  class="btn btn-secondary btn-md navbar-right"
                   onClick={
                     user.username
                       ? this.handleLogout

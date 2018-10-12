@@ -20,15 +20,23 @@ class StudentList extends Component {
         return (
             <div>
             <h4>Student List</h4>
-              <ul>
+              <table class="table">
               {students
               .filter(s=>s.schoolId==id)
               .map(s =>
-                  <li key={s.id}>{`${s.firstName} ${s.lastName}`}
-                  <div onClick={()=>this.handleUpdate(s)}>X</div>
-                  </li>
+                <tr class="d-flex">
+                  <td key={s.id} class="col-6">{`${s.firstName} ${s.lastName}`}</td>
+                  <td class="col-6 float-left">
+                  <button
+                  onClick={()=>this.handleUpdate(s)}
+                  class="btn-danger btn-xs float-left"
+                  >
+                  x
+                  </button>
+                  </td>
+                  </tr>
                 )}
-              </ul>
+              </table>
           </div>
         )
     }

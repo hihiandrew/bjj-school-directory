@@ -18,26 +18,35 @@ class Students extends Component {
       return foundSchool ? foundSchool.name : 'Unaffiliated';
     };
     return (
-      <div>
-        <ul>
-          {students.map(student => {
+      <div class="container">
+        <h2>Student Directory</h2>
+        <table class="table table-hover table bordered">
+          <tr>
+            <th>Student Name</th>
+            <th>Gym</th>
+          </tr>
+        {students.map(student => {
             return (
-              <li key={student.id}>
-                <Link to={`/students/${student.id}`}>
-                  {student.firstName} {student.lastName}
-                </Link>{' '}
-                -{' '}
-                {student.schoolId ? (
-                  <Link to={`/schools/${student.schoolId}`}>
-                    {findSchool(student)}
+              <tr>
+                <td key={student.id}>
+                  <Link to={`/students/${student.id}`}>
+                    {student.firstName} {student.lastName}
                   </Link>
-                ) : (
-                  'Unaffiliated'
-                )}
-              </li>
+                </td>
+                <td>
+                  {student.schoolId ? (
+                    <Link to={`/schools/${student.schoolId}`}>
+                      {findSchool(student)}
+                    </Link>
+                  ) : (
+                    'Unaffiliated'
+                  )}
+                </td>
+                </tr>
             );
           })}
-        </ul>
+
+        </table>
         <Link to="students/create">
           <button>New Student</button>
         </Link>

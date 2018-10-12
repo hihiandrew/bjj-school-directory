@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Login extends Component {
   render() {
     return (
-      <div>
+      <div class="container">
         <h3>Welcome to the Brazilian Jiu Jitsu World Directory!</h3>
         Pre-loaded logins:
         <ul>

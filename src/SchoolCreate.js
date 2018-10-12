@@ -71,7 +71,8 @@ class SchoolCreate extends Component {
       addSchool(this.state).then(school =>
         history.push(`/schools/${school.id}`)
       );
-    } else {
+    }
+    else {
       updateSchool(this.state, id * 1).then(() =>
         this.setState({ view: true })
       );
@@ -92,15 +93,26 @@ class SchoolCreate extends Component {
     const { name, address, description, view } = this.state;
     const createForm = id == 'create';
     return (
-      <div>
+      <div class="container">
+      <div class="row">
         <h3>
           {createForm ? 'Create' : ''}
           School
           {view ? ' Details ' : ' Update '}
-          <button onClick={this.toggleView}>{view ? 'Update' : 'View'}</button>
+          <button
+          onClick={this.toggleView}
+          class="btn-primary btn-sm"
+          >
+          {view ? 'Edit' : 'View'}
+          </button>
         </h3>
+      </div>
 
-        <form onSubmit={this.handleSubmit}>
+      <div class="row">
+
+      <div class="col-sm-6">
+
+      <form onSubmit={this.handleSubmit}>
           <p>Name: </p>
           {view ? (
             <p>{name}</p>
@@ -136,13 +148,29 @@ class SchoolCreate extends Component {
           {view ? (
             ''
           ) : (
-            <button type="submit" disabled={!this.state.name}>
+            <button
+            type="submit"
+            disabled={!this.state.name}
+            class="btn-primary btn-sm"
+            >
               {createForm ? 'Create' : 'Update'} School
             </button>
           )}
-          {!createForm ? (
+
+          <button
+          onClick={this.handleDeleteSchool}
+          class="btn-warning btn-sm"
+          >
+          Delete School
+          </button>
+          </form>
+
+      </div>
+
+      <div class="col-sm-6">
+
+      {!createForm ? (
             <div>
-              <button onClick={this.handleDeleteSchool}>Delete School</button>
               <StudentList id={id} />
               <AddStudents id={id} history={history} />
               <br />
@@ -158,7 +186,12 @@ class SchoolCreate extends Component {
           ) : (
             ''
           )}
-        </form>
+
+      </div>
+
+
+
+        </div>
       </div>
     );
   }

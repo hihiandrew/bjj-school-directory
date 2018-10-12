@@ -21,18 +21,24 @@ class Schools extends Component {
     };
 
     return (
-      <div>
-        <ul>
+      <div class="container">
+        <h2>School Directory</h2>
+        <table class="table table-hover">
+          <tr>
+            <th>Gym</th>
+          </tr>
           {schools.map(school => {
             return (
-              <li key={school.id}>
-                <Link to={`schools/${school.id}`}>
-                  {school.name} ({studentCount(school)})
-                </Link>
-              </li>
+              <tr>
+                <td key={school.id}>
+                  <Link to={`schools/${school.id}`}>
+                    {school.name} ({studentCount(school)})
+                  </Link>
+                </td>
+              </tr>
             );
           })}
-        </ul>
+        </table>
         <Link to="schools/create">
           <button>New School</button>
         </Link>

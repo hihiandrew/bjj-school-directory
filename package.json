@@ -19,6 +19,7 @@
     "morgan": "^1.9.1",
     "pg": "^7.4.3",
     "react": "^16.5.2",
+    "react-avatar-editor": "^11.0.4",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
