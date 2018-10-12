@@ -18,30 +18,33 @@ class Navbar extends Component {
     const { schools, students, user, history, id } = this.props;
     return (
       <div>
-        <nav class="navbar navbar-inverse navbar-static-top">
-          <div class="container">
-            {/* <!-- Navbar Header [contains both toggle button and navbar brand] --> */}
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+
+            {/* <!-- Navbar Header [toggle + brand] --> */}
             <div class="navbar-header">
-              {/* <!-- Toggle Button [handles opening navbar components on mobile screens]--> */}
+              {/* <!-- Toggle Button [handles mobile screens]--> */}
               <button
                 type="button"
-                class="navbar-toggle collapsed"
+                class="navbar-toggle"
                 data-toggle="collapse"
-                data-target="#exampleNavComponents"
+                data-target="#myNavbar"
                 aria-expanded="false"
               >
-                <i class="glyphicon glyphicon-align-center" />
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
               </button>
-
               {/* <!-- Navbar Brand --> */}
               <Link to="/">
                 <a class="navbar-brand">BJJ</a>
               </Link>
             </div>
 
-            <div class="collapse navbar-collapse" id="exampleNavComponents">
+            <div class="collapse navbar-collapse" id="myNavbar">
+
               {/* <!-- Navbar Menu --> */}
-              <ul class="nav navbar-nav navbar-right">
+              <ul class="nav navbar-nav">
                 <li class={id == 'home' ? 'active' : ''}>
                   <Link to="/">Home</Link>
                 </li>
@@ -53,29 +56,35 @@ class Navbar extends Component {
                 </li>
               </ul>
 
-              {/* <!-- Navbar Button --> */}
-              <a
-                type="button"
-                // class="btn btn-default navbar-btn navbar-left"
-                class="btn btn-secondary btn-lg active navbar-left"
-                role="button"
-                onClick={
-                  user.username
-                    ? this.handleLogout
-                    : () => {
-                        history.push('/auth/login');
-                      }
-                }
-              >
-                {user.username ? 'Logout' : 'Login'}
-              </a>
 
-              {/* <!-- Navbar Text --> */}
-              <p class="navbar-text">
-                {user.username
+              {/* <!-- Navbar Logout --> */}
+              <ul class="nav navbar-nav navbar-right">
+                <li>
+                  <p class="navbar-text">
+                    {user.username
                   ? `Logged in as ${user.username}`
                   : `Not logged in.`}
-              </p>
+                  </p>
+                </li>
+                <li>
+                  <a
+                  class="btn btn-secondary btn-lg navbar-right"
+                  onClick={
+                    user.username
+                      ? this.handleLogout
+                      : () => {
+                          history.push('/auth/login');
+                        }
+                    }
+                  >
+                  <span class={user.username ?
+                  "glyphicon glyphicon-log-out":
+                  "glyphicon glyphicon-log-in"}/>
+                    {user.username ? ' Logout' : ' Login'}
+                  </a>
+                </li>
+              </ul>
+
             </div>
           </div>
         </nav>
